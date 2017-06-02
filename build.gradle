@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        jcenter()
+        //mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+mainClassName = 'com.example.ApplicationRun'
+
+allprojects {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        jcenter()
+    }
+}
+
+jar {
+    baseName = 'gs-rest-service'
+    version =  '0.1.0'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'com.alibaba', name: 'druid', version: '1.0.13'
+    compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '1.1.1'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.32'
+    compile group: 'com.google.guava', name: 'guava', version: '16.0-rc1'
+    compile ("org.springframework.boot:spring-boot-starter-freemarker")
+}

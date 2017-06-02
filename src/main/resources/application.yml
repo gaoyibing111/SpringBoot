@@ -1,0 +1,38 @@
+#spring的配置
+spring:
+    datasource:
+        name: hivedata
+        url: jdbc:mysql://localhost:3306/credit?characterEncoding=UTF-8
+        username: root
+        password: 123
+        # 使用druid数据连接池
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 'x' FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    aop:
+        proxy-target-class: true
+
+
+
+
+ #tomcat容器的配置
+server:
+    context-path: /demo/
+    port: 8090
+
+#mybatis的配置
+mybatis:
+  type-aliases-package: com.exmple.mapper
+  mapper-locations: classpath*:mappings/**/*.xml
