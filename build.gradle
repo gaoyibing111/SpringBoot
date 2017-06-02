@@ -1,3 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+
+/* 打jar包时，会写入 MAINFEST.MF 文件 启动main方法，需要添加 apply plugin: 'application' */
+mainClassName = 'com.example.ApplicationRun'
+
 buildscript {
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
@@ -9,12 +18,7 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
-apply plugin: 'application'
-mainClassName = 'com.example.ApplicationRun'
+
 
 allprojects {
     repositories {
