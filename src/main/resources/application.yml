@@ -2,9 +2,9 @@
 spring:
     datasource:
         name: hivedata
-        url: jdbc:mysql://localhost:3306/credit?characterEncoding=UTF-8
-        username: root
-        password: 123
+        url: #配置在 配置中心
+        username: #配置在 配置中心
+        password: #配置在 配置中心
         # 使用druid数据连接池
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver

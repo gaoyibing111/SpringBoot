@@ -3,6 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
+apply plugin: 'docker'
 
 /* 打jar包时，会写入 MAINFEST.MF 文件 启动main方法，需要添加 apply plugin: 'application' */
 mainClassName = 'com.example.ApplicationRun'
@@ -15,6 +16,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -26,6 +28,8 @@ allprojects {
         jcenter()
     }
 }
+
+group = 'springboot' /*如果使用 gradle 来制作docker镜像 会用group 来命名 image*/
 
 jar {
     baseName = 'gs-rest-service'
@@ -39,6 +43,24 @@ repositories {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+/*========docker=======*/
+
+
+task buildDocker(type: Docker, dependsOn: build) {
+/* 将在整个目录下找dockerfile */
+    push = true
+    applicationName = jar.baseName
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {    //将Dockerfile 和 springboot的jar包 复制到 build 目录下
+            from jar
+            into stageDir
+        }
+    }
+}
+
+
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
