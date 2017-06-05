@@ -10,5 +10,6 @@ VOLUME /tmp
 # 将打好的jar 命名为 app.jar 添加到image中
 ADD gs-rest-service-0.1.0.jar app.jar
 
-# 容器启动后执行的命令 与CMD的区别是不可以被docker run覆盖
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+# 容器启动后执行的命令 我使用的boot2docker 及baseImage为 centos7 ,启动容器执行 java 出现golang247line fail，所以先注掉，
+# 每次进入容器后，手动 执行 java  -jar  app.jar
+#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
