@@ -2,7 +2,7 @@
 FROM gaoyibing111/baseimage_centosjdk8:3
 
 # 维护者信息
-MAINTAINER yb Gao <gaoyibing111@126.com>
+MAINTAINER ybGao <gaoyibing111@126.com>
 
 # springio解释到因为内置到tomcat
 VOLUME /tmp

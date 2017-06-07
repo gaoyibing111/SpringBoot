@@ -5,6 +5,7 @@ apply plugin: 'spring-boot'
 apply plugin: 'application'
 apply plugin: 'docker'
 
+
 /* 打jar包时，会写入 MAINFEST.MF 文件 启动main方法，需要添加 apply plugin: 'application' */
 mainClassName = 'com.example.ApplicationRun'
 
@@ -15,8 +16,11 @@ buildscript {
         //mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
-        classpath('se.transmode.gradle:gradle-docker:1.2')
+         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+
+         classpath("se.transmode.gradle:gradle-docker:1.2")
+       // classpath 'org.codehaus.groovy:groovy-backports-compat23:2.3.5'
+
     }
 }
 
@@ -49,25 +53,29 @@ targetCompatibility = 1.8
 制作好的镜像名为：example ：gaoyibing111/gs-rest-service:latest
 如果重复执行 task buildDocker ，并且group 不变的情况下，之前的镜像名字会 自动变为 <none>
 */
-group = 'gaoyibing111'
+ group = 'gaoyibing111'
 
-/*目前 distDocker 执行时报错，还在排查中*/
- distDocker {
-    	    exposePort  8000
-    }
+/* 使用这个 task buildDocker 必须 先应用  apply plugin: 'docker' 之后在gradle应用面板中出现 distDocker
+（apply plugin: 'docker' 就不能用另一个开源插件 apply plugin: 'com.bmuschko.docker-java-application' ）
 
-/* 将在目录下找dockerfile ,制作镜像，并将推送到 docker ；目前执行这个命令控制台出现 Successfully built $imageid 时已经制作好镜像了，但是线程被挂起，没有终止 */
+根据docker file 以及 jar包 制作镜像
+目前执行这个命令控制台出现 Successfully built $imageid 时已经制作好镜像了，但是线程被挂起，没有终止 */
 task buildDocker(type: Docker, dependsOn: build) {
-    push = true
-    applicationName = jar.baseName
+    push = false  //取消推送到 hub docker
+    applicationName = jar.baseName   // jar指令 的baseName
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {    //将Dockerfile 和 springboot的jar包 复制到 build 目录下
-            from jar
-            into stageDir
+            from jar   // 复制 jar指令 的输出
+            into ('build/docker/')   //复制到 stageDir 目录中
+        }
+        copy {    //为了满足本人 hub docker 系统查询 本项目 docker file的所在目录 ，便复制一份到 src/main/docker/ 目录下
+            from jar   // 复制 jar指令 的输出
+            into ('src/main/docker/')
         }
     }
 }
+
 
 
 /* 项目依赖的jar */
