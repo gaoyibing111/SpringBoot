@@ -26,11 +26,11 @@ spring:
 
 
 
-
- #tomcat容器的配置
-server:
-    context-path: /demo/
-    port: 8090
+#把内置的tomcat 参数 配置在 properties文件中，以便日后使用配置中心
+# #tomcat容器的配置
+#server:
+#    context-path: /demo/
+#    port: 8090
 
 #mybatis的配置
 mybatis:

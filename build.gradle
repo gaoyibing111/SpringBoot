@@ -29,7 +29,7 @@ allprojects {
     }
 }
 
-group = 'springboot' /*如果使用 gradle 来制作docker镜像 会用group 来命名 image*/
+
 
 jar {
     baseName = 'gs-rest-service'
@@ -45,10 +45,19 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 /*========docker=======*/
+/*如果使用 gradle 来制作docker镜像 会用group 来命名 image ，
+制作好的镜像名为：example ：gaoyibing111/gs-rest-service:latest
+如果重复执行 task buildDocker ，并且group 不变的情况下，之前的镜像名字会 自动变为 <none>
+*/
+group = 'gaoyibing111'
 
+/*目前 distDocker 执行时报错，还在排查中*/
+ distDocker {
+    	    exposePort  8000
+    }
 
+/* 将在目录下找dockerfile ,制作镜像，并将推送到 docker ；目前执行这个命令控制台出现 Successfully built $imageid 时已经制作好镜像了，但是线程被挂起，没有终止 */
 task buildDocker(type: Docker, dependsOn: build) {
-/* 将在整个目录下找dockerfile */
     push = true
     applicationName = jar.baseName
     dockerfile = file('src/main/docker/Dockerfile')
@@ -61,7 +70,7 @@ task buildDocker(type: Docker, dependsOn: build) {
 }
 
 
-
+/* 项目依赖的jar */
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile('org.springframework.boot:spring-boot-starter-test')

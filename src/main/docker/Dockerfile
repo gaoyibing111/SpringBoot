@@ -10,6 +10,10 @@ VOLUME /tmp
 # 将打好的jar 命名为 app.jar 添加到image中
 ADD gs-rest-service-0.1.0.jar app.jar
 
-# 容器启动后执行的命令 我使用的boot2docker 及baseImage为 centos7 ,启动容器执行 java 出现golang247line fail，所以先注掉，
-# 每次进入容器后，手动 执行 java  -jar  app.jar
-#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+# jdk enviroment
+#  如果不添加ENV，下面的 ENTRYPOINT会出现 " exec: \"java\": executable file not found in $PATH " 的错误，且无法启动容器，容器状态为CREATE
+ENV JAVA_HOME=/usr/local/jdk/jdk1.8.0_131
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# 每次进入容器后，自动 执行 java  -jar  app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
